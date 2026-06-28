@@ -10,6 +10,8 @@ dependencies = [
     "pytest (>=9.1.1,<10.0.0)"
 ]
 
+[tool.poetry]
+package-mode = false
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
@@ -26,11 +28,11 @@ lint = [
 [tool.mypy]
 disallow_untyped_defs = true
 warn_return_any = true
-exclude = 'venv'
+exclude = '.venv'
 
 [tool.black]
 line-length = 119
-exclude = "/.git"
+exclude = '/(\.git|\.venv)/'
 
 [tool.isort]
 line_length = 119
