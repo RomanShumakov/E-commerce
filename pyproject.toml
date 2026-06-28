@@ -1,0 +1,15 @@
+[project]
+name = "e-commerce"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Роман Шумаков",email = "romeo46100@mail.ru"}
+]
+requires-python = ">=3.14"
+dependencies = [
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
