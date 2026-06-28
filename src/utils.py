@@ -1,7 +1,8 @@
 import json
 import os
 
-from src.classes import Product, Category
+from src.classes import Category, Product
+
 
 def read_json(path: str) -> list:
 
@@ -9,6 +10,7 @@ def read_json(path: str) -> list:
     with open(full_path, "r", encoding="UTF-8") as file:
         data = json.load(file)
     return data
+
 
 def create_objects_from_json(data):
     categories = []
