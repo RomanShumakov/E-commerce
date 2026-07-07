@@ -12,6 +12,16 @@ class Product:
         self.price = price
         self.quantity = quantity
 
+    @classmethod
+    def new_product(cls, product_data: dict):
+        """Создает и возвращает новый объект Product из словаря"""
+        return cls(
+            name=product_data.get('name'),
+            description=product_data.get('description'),
+            price=product_data.get('price'),
+            quantity=product_data.get('quantity')
+        )
+
 
 class Category:
     """Класс описания продуктов внутри одной категории"""
