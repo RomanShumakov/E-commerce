@@ -12,6 +12,12 @@ class Product:
         self.__price = price
         self.quantity = quantity
 
+    def __str__(self):
+        return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт."
+
+    def __add__(self, other):
+        return (self.__price * self.quantity) + (other.__price * other.quantity)
+
     @classmethod
     def new_product(cls, product_data: dict):
         """Создает и возвращает новый объект Product из словаря"""
@@ -50,6 +56,10 @@ class Category:
         Category.category_count += 1
         Category.product_count += len(products)
 
+    def __str__(self):
+        total_quantity = sum(product.quantity for product in self.__products)
+        return f"{self.name}, количество продуктов: {total_quantity} шт."
+
     def add_product(self, new_product: Product):
         self.__products.append(new_product)
         Category.product_count += 1
@@ -58,6 +68,6 @@ class Category:
     def products(self):
         result = []
         for product in self.__products:
-            result.append(f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.")
+            result.append(str(product))
         return "\n".join(result)
 
