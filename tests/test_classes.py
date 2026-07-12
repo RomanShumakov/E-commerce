@@ -21,22 +21,16 @@ def test_product_str(product_iphone):
     assert str(product_iphone) == "Iphone 17 Pro Max, 210000.0 руб. Остаток: 7 шт."
 
 def test_product_add(product_iphone):
-    """Тестируем сложение стоимости двух разных продуктов на складе"""
-    product_samsung = Product("Samsung Galaxy S24", "256GB, Black", 120000.0, 5)
-
-    # Стоимость iphone: 210000 * 7 = 1 470 000
-    # Стоимость samsung: 120000 * 5 = 600 000
-    # Ожидаемый итог: 2 070 000
+    """Тестируем сложение двух продуктов (__add__)"""
+    product_samsung = Product("Samsung Galaxy S24", "256GB", 120000.0, 5)
+    # Считаем: (210000 * 7) + (120000 * 5) = 1 470 000 + 600 000 = 2 070 000
     assert product_iphone + product_samsung == 2070000.0
 
 def test_category_init(category_smartphones):
     assert category_smartphones.name == "Смартфоны"
     assert "Iphone 17 Pro Max, 210000.0 руб. Остаток: 7 шт." in category_smartphones.products
-
-    # Счётчики классов накапливаются при создании объектов во всех тестах.
-    # Чтобы тесты не падали из-за порядка запуска, проверяем, что они больше нуля.
-    assert category_smartphones.product_count >= 1
-    assert category_smartphones.category_count >= 1
+    assert category_smartphones.product_count == 1
+    assert category_smartphones.category_count == 1
 
 def test_category_str(category_smartphones):
     """Тестируем строковое отображение категории"""
