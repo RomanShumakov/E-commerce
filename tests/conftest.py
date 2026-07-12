@@ -9,9 +9,9 @@ def product_iphone():
 
 
 @pytest.fixture
-def category_smartphones():
+def category_smartphones(product_iphone):
     return Category(
         "Смартфоны",
         "Смартфоны, как средство не только коммуникации, но и получения дополнительных функций для удобства жизни",
-        ["product1", "product2", "product3"],
+        [product_iphone],
     )
