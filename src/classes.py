@@ -1,4 +1,17 @@
-class Product:
+from abc import ABC, abstractmethod
+
+class BaseProduct(ABC):
+    """Базовый абстрактный класс для всех продуктов"""
+
+    @abstractmethod
+    def __init__(self, name, description, price, quantity):
+        pass
+
+    @abstractmethod
+    def __str__(self):
+        pass
+
+class Product(BaseProduct):
     """Класс описания продукта"""
 
     name: str
