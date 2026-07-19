@@ -24,10 +24,10 @@ class Product:
     def new_product(cls, product_data: dict):
         """Создает и возвращает новый объект Product из словаря"""
         return cls(
-            name=product_data.get('name'),
-            description=product_data.get('description'),
-            price=product_data.get('price'),
-            quantity=product_data.get('quantity')
+            name=product_data.get("name"),
+            description=product_data.get("description"),
+            price=product_data.get("price"),
+            quantity=product_data.get("quantity"),
         )
 
     @property
@@ -78,10 +78,11 @@ class Category:
 
 
 class Smartphone(Product):
-    """ Класс продукта 'Смартфон' """
+    """Класс продукта 'Смартфон'"""
+
     efficiency: str
     model: str
-    memory:str
+    memory: str
     color: str
 
     def __init__(self, name, description, price, quantity, efficiency, model, memory, color):
@@ -93,7 +94,7 @@ class Smartphone(Product):
 
 
 class LawnGrass(Product):
-    """ Класс продукта 'трава газонная' """
+    """Класс продукта 'трава газонная'"""
 
     country: str
     germination_period: str
@@ -104,4 +105,3 @@ class LawnGrass(Product):
         self.country = country
         self.germination_period = germination_period
         self.color = color
-

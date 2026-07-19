@@ -1,7 +1,9 @@
-from src.classes import Category, Product, Smartphone, LawnGrass
+from src.classes import Category, LawnGrass, Product, Smartphone
 
 if __name__ == "__main__":
-    product1 = Smartphone("Samsung Galaxy S23 Ultra", "256GB, 200MP камера", 180000.0, 5, "eff_1", "model_1", "memory_1", "Серый цвет")
+    product1 = Smartphone(
+        "Samsung Galaxy S23 Ultra", "256GB, 200MP камера", 180000.0, 5, "eff_1", "model_1", "memory_1", "Серый цвет"
+    )
     product2 = Smartphone("Iphone 15", "512GB", 210000.0, 8, "eff_2", "model_2", "memory_2", "Gray space")
     product3 = Smartphone("Xiaomi Redmi Note 11", "1024GB", 31000.0, 14, "eff_3", "model_3", "memory_3", "Синий")
 
