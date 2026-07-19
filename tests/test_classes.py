@@ -1,5 +1,6 @@
 import pytest
-from src.classes import BaseProduct, Product, Smartphone, LawnGrass
+
+from src.classes import BaseProduct, LawnGrass, Product, Smartphone
 
 
 def test_product_init(product_iphone):
@@ -111,6 +112,7 @@ def test_base_product_instantiation():
     with pytest.raises(TypeError):
         BaseProduct()
 
+
 def test_print_mixin_console_output(capsys):
     """Проверяем, что при создании продукта в консоль печатается информация об объекте"""
     # Создаем продукт, миксин должен сработать и напечатать лог в консоль
@@ -123,14 +125,13 @@ def test_print_mixin_console_output(capsys):
     assert "'Тестовый телефон'" in captured.out
     assert "50000.0" in captured.out
 
+
 def test_repr_format_for_different_classes():
     """Проверяем, что __repr__ возвращает корректную строку для разных классов"""
     product = Product("Тестовый телефон", "Описание", 50000.0, 3)
     assert repr(product).startswith("Product(")
     assert "'Тестовый телефон'" in repr(product)
 
-    smartphone = Smartphone(
-        "Samsung", "S23", 100000.0, 2, "high", "S23", "128", "Black"
-    )
+    smartphone = Smartphone("Samsung", "S23", 100000.0, 2, "high", "S23", "128", "Black")
     assert repr(smartphone).startswith("Smartphone(")
     assert "'Samsung'" in repr(smartphone)

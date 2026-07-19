@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+
 class BaseProduct(ABC):
     """Абстрактный класс для продуктов"""
 
@@ -11,6 +12,7 @@ class BaseProduct(ABC):
     def __str__(self):
         pass
 
+
 class PrintMixin:
     """Миксин для логирования создания объекта"""
 
@@ -21,6 +23,7 @@ class PrintMixin:
         # Собираем значения всех атрибутов из __dict__
         params = [repr(v) for v in self.__dict__.values()]
         return f"{self.__class__.__name__}({', '.join(params)})"
+
 
 class Product(PrintMixin, BaseProduct):
     """Класс описания продукта"""
@@ -55,8 +58,10 @@ class Product(PrintMixin, BaseProduct):
         else:
             self.__price = value
 
+
 class Smartphone(Product):
     """Класс Смартфон"""
+
     def __init__(self, name, description, price, quantity, efficiency, model, memory, color):
         self.efficiency = efficiency
         self.model = model
@@ -64,16 +69,20 @@ class Smartphone(Product):
         self.color = color
         super().__init__(name, description, price, quantity)
 
+
 class LawnGrass(Product):
     """Класс Трава газонная"""
+
     def __init__(self, name, description, price, quantity, country, germination_period, color):
         self.country = country
         self.germination_period = germination_period
         self.color = color
         super().__init__(name, description, price, quantity)
 
+
 class Category:
     """Класс категории товаров"""
+
     category_count = 0
     product_count = 0
 
