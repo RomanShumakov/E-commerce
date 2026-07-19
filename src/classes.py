@@ -11,19 +11,28 @@ class BaseProduct(ABC):
     def __str__(self):
         pass
 
-class Product(BaseProduct):
+class PrintMixin:
+    """Миксин для логирования создания объекта"""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        print(repr(self))
+
+    def __repr__(self):
+        # Собираем все значения атрибутов объекта в строку через запятую
+        params = ", ".join([repr(value) for value in self.__dict__.values()])
+        return f"{self.__class__.__name__}({params})"
+
+class Product(PrintMixin, BaseProduct):
     """Класс описания продукта"""
 
-    name: str
-    description: str
-    price: float
-    quantity: int
-
-    def __init__(self, name, description, price, quantity):
+    def __init__(self, name: str, description: str, price: float, quantity: int):
+        # Инициализия атрибуты ПЕРЕД напечаткой
         self.name = name
         self.description = description
         self.__price = price
         self.quantity = quantity
+        super().__init__()
 
     def __str__(self):
         return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт."
