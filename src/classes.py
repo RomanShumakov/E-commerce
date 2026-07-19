@@ -4,7 +4,7 @@ class BaseProduct(ABC):
     """Базовый абстрактный класс для всех продуктов"""
 
     @abstractmethod
-    def __init__(self, name, description, price, quantity):
+    def __init__(self):
         pass
 
     @abstractmethod
@@ -15,23 +15,23 @@ class PrintMixin:
     """Миксин для логирования создания объекта"""
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
         print(repr(self))
 
     def __repr__(self):
-        # Собираем все значения атрибутов объекта в строку через запятую
-        params = ", ".join([repr(value) for value in self.__dict__.values()])
+        # Собираем все значения атрибутов из __dict__
+        params = ", ".join([f"{repr(value)}" for value in self.__dict__.values() if not value.__class__.__name__ == 'bool'])
+        # Если в __dict__ есть приватные атрибуты, они будут с именем класса, это нормально для лога
         return f"{self.__class__.__name__}({params})"
 
 class Product(PrintMixin, BaseProduct):
     """Класс описания продукта"""
 
     def __init__(self, name: str, description: str, price: float, quantity: int):
-        # Инициализия атрибуты ПЕРЕД напечаткой
         self.name = name
         self.description = description
         self.__price = price
         self.quantity = quantity
+        # Вызываем инициализатор миксина
         super().__init__()
 
     def __str__(self):
@@ -44,7 +44,6 @@ class Product(PrintMixin, BaseProduct):
 
     @classmethod
     def new_product(cls, product_data: dict):
-        """Создает и возвращает новый объект Product из словаря"""
         return cls(
             name=product_data.get("name"),
             description=product_data.get("description"),
@@ -57,18 +56,31 @@ class Product(PrintMixin, BaseProduct):
         return self.__price
 
     @price.setter
-    def price(self, new_price) -> None:
+    def price(self, new_price):
         if new_price <= 0:
             print("Цена не должна быть нулевая или отрицательная")
         else:
             self.__price = new_price
 
+class Smartphone(Product):
+    """Класс Смартфон"""
+    def __init__(self, name, description, price, quantity, efficiency, model, memory, color):
+        self.efficiency = efficiency
+        self.model = model
+        self.memory = memory
+        self.color = color
+        super().__init__(name, description, price, quantity)
+
+class LawnGrass(Product):
+    """Класс Трава газонная"""
+    def __init__(self, name, description, price, quantity, country, period, color):
+        self.country = country
+        self.period = period
+        self.color = color
+        super().__init__(name, description, price, quantity)
+
 class Category:
     """Класс описания продуктов внутри одной категории"""
-
-    name: str
-    description: str
-    products: list
     category_count = 0
     product_count = 0
 
@@ -83,7 +95,7 @@ class Category:
         total_quantity = sum(product.quantity for product in self.__products)
         return f"{self.name}, количество продуктов: {total_quantity} шт."
 
-    def add_product(self, new_product: Product):
+    def add_product(self, new_product):
         if isinstance(new_product, Product):
             self.__products.append(new_product)
             Category.product_count += 1
@@ -92,35 +104,4 @@ class Category:
 
     @property
     def products(self):
-        result = []
-        for product in self.__products:
-            result.append(str(product))
-        return "\n".join(result)
-
-class Smartphone(Product):
-    """Класс продукта 'Смартфон'"""
-
-    efficiency: str
-    model: str
-    memory: str
-    color: str
-
-    def __init__(self, name, description, price, quantity, efficiency, model, memory, color):
-        super().__init__(name, description, price, quantity)
-        self.efficiency = efficiency
-        self.model = model
-        self.memory = memory
-        self.color = color
-
-class LawnGrass(Product):
-    """Класс продукта 'трава газонная'"""
-
-    country: str
-    germination_period: str
-    color: str
-
-    def __init__(self, name, description, price, quantity, country, germination_period, color):
-        super().__init__(name, description, price, quantity)
-        self.country = country
-        self.germination_period = germination_period
-        self.color = color
+        return "\n".join([str(p) for p in self.__products])
