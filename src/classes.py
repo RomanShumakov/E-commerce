@@ -16,7 +16,7 @@ class Product:
         return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт."
 
     def __add__(self, other):
-        if type(other) == self.__class__:
+        if type(other) is self.__class__:
             return (self.__price * self.quantity) + (other.__price * other.quantity)
         raise TypeError
 
@@ -40,7 +40,6 @@ class Product:
             print("Цена не должна быть нулевая или отрицательная")
         else:
             self.__price = new_price
-
 
 class Category:
     """Класс описания продуктов внутри одной категории"""
@@ -76,7 +75,6 @@ class Category:
             result.append(str(product))
         return "\n".join(result)
 
-
 class Smartphone(Product):
     """Класс продукта 'Смартфон'"""
 
@@ -85,13 +83,22 @@ class Smartphone(Product):
     memory: str
     color: str
 
-    def __init__(self, name, description, price, quantity, efficiency, model, memory, color):
+    def __init__(
+        self,
+        name,
+        description,
+        price,
+        quantity,
+        efficiency,
+        model,
+        memory,
+        color,
+    ):
         super().__init__(name, description, price, quantity)
         self.efficiency = efficiency
         self.model = model
         self.memory = memory
         self.color = color
-
 
 class LawnGrass(Product):
     """Класс продукта 'трава газонная'"""
@@ -100,7 +107,16 @@ class LawnGrass(Product):
     germination_period: str
     color: str
 
-    def __init__(self, name, description, price, quantity, country, germination_period, color):
+    def __init__(
+        self,
+        name,
+        description,
+        price,
+        quantity,
+        country,
+        germination_period,
+        color,
+    ):
         super().__init__(name, description, price, quantity)
         self.country = country
         self.germination_period = germination_period
