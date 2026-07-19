@@ -46,3 +46,10 @@ def test_smartphone_init(smartphone_1):
     assert smartphone_1.model == "IPhone"
     assert smartphone_1.memory == "512GB"
     assert smartphone_1.color == "Gray space"
+
+def test_smartphone_sum(smartphone_1, smartphone_2):
+    assert smartphone_1 + smartphone_2 == 210000.0 * 8 + 180000.0 * 5
+
+def test_smartphone_sum_error(smartphone_1):
+    with pytest.raises(TypeError):
+        result = smartphone_1 + 1
