@@ -35,3 +35,14 @@ def test_category_init(category_smartphones):
 def test_category_str(category_smartphones):
     """Тестируем строковое отображение категории"""
     assert str(category_smartphones) == "Смартфоны, количество продуктов: 7 шт."
+
+def test_smartphone_init(smartphone_1):
+    """ Проверка инииализации класса Smartphone"""
+    assert smartphone_1.name == "Iphone 15"
+    assert smartphone_1.description == "512GB"
+    assert smartphone_1.price == 210000.0
+    assert smartphone_1.quantity == 8
+    assert smartphone_1.efficiency == "super effective"
+    assert smartphone_1.model == "IPhone"
+    assert smartphone_1.memory == "512GB"
+    assert smartphone_1.color == "Gray space"
