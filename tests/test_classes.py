@@ -53,3 +53,21 @@ def test_smartphone_sum(smartphone_1, smartphone_2):
 def test_smartphone_sum_error(smartphone_1):
     with pytest.raises(TypeError):
         result = smartphone_1 + 1
+
+
+def test_lawngrass_init(lawngrass_1):
+    """ Проверка инииализации класса Smartphone"""
+    assert lawngrass_1.name == "grass"
+    assert lawngrass_1.description == "трава для садоводства"
+    assert lawngrass_1.price == 500
+    assert lawngrass_1.quantity == 30
+    assert lawngrass_1.country == "Russia"
+    assert lawngrass_1.germination_period == "1 month"
+    assert lawngrass_1.color == "green"
+
+def test_lawngrass_sum(lawngrass_1, lawngrass_2):
+    assert lawngrass_1 + lawngrass_2 == 500 * 30 + 500 * 30
+
+def test_lawngrass_sum_error(lawngrass_1):
+    with pytest.raises(TypeError):
+        result = lawngrass_1 + 1
