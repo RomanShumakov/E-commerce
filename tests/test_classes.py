@@ -71,3 +71,24 @@ def test_lawngrass_sum(lawngrass_1, lawngrass_2):
 def test_lawngrass_sum_error(lawngrass_1):
     with pytest.raises(TypeError):
         result = lawngrass_1 + 1
+
+def test_add_product_success(category_smartphones, smartphone_2):
+    """Проверка успешного добавления наследника Product (смартфона) в категорию"""
+    # Так как products возвращает строку, считаем количество продуктов по строкам
+    initial_count = len(category_smartphones.products.strip().split('\n'))
+
+    # Добавляем новый смартфон
+    category_smartphones.add_product(smartphone_2)
+
+    # Теперь строк должно стать на одну больше
+    current_count = len(category_smartphones.products.strip().split('\n'))
+    assert current_count == initial_count + 1
+
+    # И строковое представление нового смартфона теперь есть внутри этой большой строки
+    assert str(smartphone_2) in category_smartphones.products
+
+
+def test_add_product_invalid_type(category_smartphones):
+    """Проверка ошибки при попытке добавить не-Product"""
+    with pytest.raises(TypeError):
+        category_smartphones.add_product("Просто какая-то строка вместо объекта")
