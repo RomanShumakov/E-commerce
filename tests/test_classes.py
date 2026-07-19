@@ -1,6 +1,5 @@
 import pytest
-
-from src.classes import Product
+from src.classes import BaseProduct, Product, Smartphone, LawnGrass
 
 
 def test_product_init(product_iphone):
@@ -105,3 +104,33 @@ def test_add_product_invalid_type(category_smartphones):
     """Проверка ошибки при попытке добавить не-Product"""
     with pytest.raises(TypeError):
         category_smartphones.add_product("Просто какая-то строка вместо объекта")
+
+
+def test_base_product_instantiation():
+    """Проверяем, что абстрактный класс BaseProduct нельзя инициализировать напрямую"""
+    with pytest.raises(TypeError):
+        BaseProduct()
+
+def test_print_mixin_console_output(capsys):
+    """Проверяем, что при создании продукта в консоль печатается информация об объекте"""
+    # Создаем продукт, миксин должен сработать и напечатать лог в консоль
+    product = Product("Тестовый телефон", "Описание", 50000.0, 3)
+
+    captured = capsys.readouterr()
+
+    # Проверяем, что в выводе содержится имя класса и переданные аргументы
+    assert "Product" in captured.out
+    assert "'Тестовый телефон'" in captured.out
+    assert "50000.0" in captured.out
+
+def test_repr_format_for_different_classes():
+    """Проверяем, что __repr__ возвращает корректную строку для разных классов"""
+    product = Product("Тестовый телефон", "Описание", 50000.0, 3)
+    assert repr(product).startswith("Product(")
+    assert "'Тестовый телефон'" in repr(product)
+
+    smartphone = Smartphone(
+        "Samsung", "S23", 100000.0, 2, "high", "S23", "128", "Black"
+    )
+    assert repr(smartphone).startswith("Smartphone(")
+    assert "'Samsung'" in repr(smartphone)
