@@ -16,16 +16,18 @@ class Product:
         return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт."
 
     def __add__(self, other):
-        return (self.__price * self.quantity) + (other.__price * other.quantity)
+        if type(self) == type(other):
+            return (self.__price * self.quantity) + (other.__price * other.quantity)
+        raise TypeError
 
     @classmethod
     def new_product(cls, product_data: dict):
         """Создает и возвращает новый объект Product из словаря"""
         return cls(
-            name=product_data.get('name'),
-            description=product_data.get('description'),
-            price=product_data.get('price'),
-            quantity=product_data.get('quantity')
+            name=product_data.get("name"),
+            description=product_data.get("description"),
+            price=product_data.get("price"),
+            quantity=product_data.get("quantity"),
         )
 
     @property
@@ -38,7 +40,6 @@ class Product:
             print("Цена не должна быть нулевая или отрицательная")
         else:
             self.__price = new_price
-
 
 class Category:
     """Класс описания продуктов внутри одной категории"""
@@ -61,8 +62,11 @@ class Category:
         return f"{self.name}, количество продуктов: {total_quantity} шт."
 
     def add_product(self, new_product: Product):
-        self.__products.append(new_product)
-        Category.product_count += 1
+        if isinstance(new_product, Product):
+            self.__products.append(new_product)
+            Category.product_count += 1
+        else:
+            raise TypeError
 
     @property
     def products(self):
@@ -71,3 +75,30 @@ class Category:
             result.append(str(product))
         return "\n".join(result)
 
+class Smartphone(Product):
+    """Класс продукта 'Смартфон'"""
+
+    efficiency: str
+    model: str
+    memory: str
+    color: str
+
+    def __init__(self, name, description, price, quantity, efficiency, model, memory, color):
+        super().__init__(name, description, price, quantity)
+        self.efficiency = efficiency
+        self.model = model
+        self.memory = memory
+        self.color = color
+
+class LawnGrass(Product):
+    """Класс продукта 'трава газонная'"""
+
+    country: str
+    germination_period: str
+    color: str
+
+    def __init__(self, name, description, price, quantity, country, germination_period, color):
+        super().__init__(name, description, price, quantity)
+        self.country = country
+        self.germination_period = germination_period
+        self.color = color

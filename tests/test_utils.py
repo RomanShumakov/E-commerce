@@ -1,7 +1,9 @@
 import json
-from unittest.mock import patch, mock_open
-from src.utils import read_json, create_objects_from_json
+from unittest.mock import mock_open, patch
+
 from src.classes import Category
+from src.utils import create_objects_from_json, read_json
+
 
 def test_read_json():
     """Тестируем чтение JSON-файла с использованием мока"""
@@ -13,15 +15,14 @@ def test_read_json():
         result = read_json("fake_path.json")
         assert result == mock_data
 
+
 def test_create_objects_from_json():
     """Тестируем преобразование списка словарей в объекты классов"""
     sample_data = [
         {
             "name": "Смартфоны",
             "description": "Описание",
-            "products": [
-                {"name": "Samsung", "description": "256GB", "price": 100.0, "quantity": 5}
-            ]
+            "products": [{"name": "Samsung", "description": "256GB", "price": 100.0, "quantity": 5}],
         }
     ]
     categories = create_objects_from_json(sample_data)
