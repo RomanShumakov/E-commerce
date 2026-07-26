@@ -1,104 +1,111 @@
-class Product:
-    """Класс описания продукта"""
+from abc import ABC, abstractmethod
 
-    name: str
-    description: str
-    price: float
-    quantity: int
+
+class BaseProduct(ABC):
+    """Абстрактный класс для продуктов"""
+
+    @abstractmethod
+    def __init__(self, name, description, price, quantity):
+        pass
+
+    @abstractmethod
+    def __str__(self):
+        pass
+
+
+class PrintMixin:
+    """Миксин для логирования создания объекта"""
+
+    def __init__(self, *args, **kwargs):
+        print(repr(self))
+
+    def __repr__(self):
+        # Собираем значения всех атрибутов из __dict__
+        params = [repr(v) for v in self.__dict__.values()]
+        return f"{self.__class__.__name__}({', '.join(params)})"
+
+
+class Product(PrintMixin, BaseProduct):
+    """Класс описания продукта"""
 
     def __init__(self, name, description, price, quantity):
         self.name = name
         self.description = description
         self.__price = price
         self.quantity = quantity
+        super().__init__()
 
     def __str__(self):
-        return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт."
+        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
 
     def __add__(self, other):
-        if type(self) == type(other):
-            return (self.__price * self.quantity) + (other.__price * other.quantity)
-        raise TypeError
+        if type(self) is not type(other):
+            raise TypeError("Можно складывать только товары одного класса")
+        return self.price * self.quantity + other.price * other.quantity
 
     @classmethod
-    def new_product(cls, product_data: dict):
-        """Создает и возвращает новый объект Product из словаря"""
-        return cls(
-            name=product_data.get("name"),
-            description=product_data.get("description"),
-            price=product_data.get("price"),
-            quantity=product_data.get("quantity"),
-        )
+    def new_product(cls, product_data):
+        return cls(**product_data)
 
     @property
     def price(self):
         return self.__price
 
     @price.setter
-    def price(self, new_price) -> None:
-        if new_price <= 0:
+    def price(self, value):
+        if value <= 0:
             print("Цена не должна быть нулевая или отрицательная")
         else:
-            self.__price = new_price
+            self.__price = value
+
+
+class Smartphone(Product):
+    """Класс Смартфон"""
+
+    def __init__(self, name, description, price, quantity, efficiency, model, memory, color):
+        self.efficiency = efficiency
+        self.model = model
+        self.memory = memory
+        self.color = color
+        super().__init__(name, description, price, quantity)
+
+
+class LawnGrass(Product):
+    """Класс Трава газонная"""
+
+    def __init__(self, name, description, price, quantity, country, germination_period, color):
+        self.country = country
+        self.germination_period = germination_period
+        self.color = color
+        super().__init__(name, description, price, quantity)
+
 
 class Category:
-    """Класс описания продуктов внутри одной категории"""
+    """Класс категории товаров"""
 
-    name: str
-    description: str
-    products: list
     category_count = 0
     product_count = 0
 
     def __init__(self, name, description, products):
         self.name = name
         self.description = description
-        self.__products = products
+        self.__products = products if products else []
         Category.category_count += 1
-        Category.product_count += len(products)
+        Category.product_count += len(self.__products)
 
-    def __str__(self):
-        total_quantity = sum(product.quantity for product in self.__products)
-        return f"{self.name}, количество продуктов: {total_quantity} шт."
-
-    def add_product(self, new_product: Product):
-        if isinstance(new_product, Product):
-            self.__products.append(new_product)
-            Category.product_count += 1
-        else:
-            raise TypeError
+    def add_product(self, product):
+        if not isinstance(product, Product):
+            raise TypeError("Добавлять можно только объекты Product или его наследников")
+        self.__products.append(product)
+        Category.product_count += 1
 
     @property
     def products(self):
-        result = []
-        for product in self.__products:
-            result.append(str(product))
-        return "\n".join(result)
+        return "\n".join([str(p) for p in self.__products])
 
-class Smartphone(Product):
-    """Класс продукта 'Смартфон'"""
+    def __len__(self):
+        # Возвращаем общее количество штук товаров в категории
+        return sum(p.quantity for p in self.__products)
 
-    efficiency: str
-    model: str
-    memory: str
-    color: str
-
-    def __init__(self, name, description, price, quantity, efficiency, model, memory, color):
-        super().__init__(name, description, price, quantity)
-        self.efficiency = efficiency
-        self.model = model
-        self.memory = memory
-        self.color = color
-
-class LawnGrass(Product):
-    """Класс продукта 'трава газонная'"""
-
-    country: str
-    germination_period: str
-    color: str
-
-    def __init__(self, name, description, price, quantity, country, germination_period, color):
-        super().__init__(name, description, price, quantity)
-        self.country = country
-        self.germination_period = germination_period
-        self.color = color
+    def __str__(self):
+        return f"{self.name}, количество продуктов: {len(self)} шт."
