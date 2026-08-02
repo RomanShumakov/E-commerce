@@ -1,6 +1,6 @@
 import pytest
 
-from src.classes import BaseProduct, LawnGrass, Product, Smartphone
+from src.classes import BaseProduct, Category, LawnGrass, Product, Smartphone
 
 
 def test_product_init(product_iphone):
@@ -135,3 +135,25 @@ def test_repr_format_for_different_classes():
     smartphone = Smartphone("Samsung", "S23", 100000.0, 2, "high", "S23", "128", "Black")
     assert repr(smartphone).startswith("Smartphone(")
     assert "'Samsung'" in repr(smartphone)
+
+
+def test_product_zero_quantity_error():
+    """Тестируем перехват ошибки ValueError при создании товара с нулевым количеством"""
+    with pytest.raises(ValueError) as excinfo:
+        Product("Сломанный телефон", "Описание", 50000.0, 0)
+    assert str(excinfo.value) == "Товар с нулевым количеством не может быть добавлен"
+
+
+def test_category_average_price(category_smartphones):
+    """Тестируем средний ценник в категории с товарами"""
+    another_phone = Product("Бюджетный телефон", "Описание", 90000.0, 5)
+    category_smartphones.add_product(another_phone)
+
+    # Ожидаемое среднее: (210000.0 + 90000.0) / 2 = 150000.0
+    assert category_smartphones.average_price() == 150000.0
+
+
+def test_category_average_price_empty():
+    """Тестируем, что для пустой категории метод average_price вернет 0"""
+    empty_category = Category("Пустая категория", "У нас тут ничего нет", [])
+    assert empty_category.average_price() == 0
